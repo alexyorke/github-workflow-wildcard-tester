@@ -8,18 +8,18 @@ class Pattern {
 function matchGithubPatterns(patterns, _haystack) {
     let regexes = patterns.map(pattern => {
         let _pattern = pattern.replaceAll(".", "\\.")
-        .replaceAll("(", "\\(")
-        .replaceAll(")", "\\)")
-        .replaceAll("^", "\^")
-        .replaceAll("$", "\$")
-        .replaceAll("/", "\/")
-        .replaceAll("|", "\|")
-        .replaceAll("{", "\{")
-        .replaceAll("}", "\}")
-        .replaceAll("**/", "__GITHUB_WORKFLOW_WILDCARD_TESTER_DOT_STAR_RESERVED__")
-        .replaceAll("**", "__GITHUB_WORKFLOW_WILDCARD_TESTER_DOT_STAR_RESERVED__")
-        .replaceAll("*", "[^\/]*")
-        .replaceAll("__GITHUB_WORKFLOW_WILDCARD_TESTER_DOT_STAR_RESERVED__", ".*");
+            .replaceAll("(", "\\(")
+            .replaceAll(")", "\\)")
+            .replaceAll("^", "\^")
+            .replaceAll("$", "\$")
+            .replaceAll("/", "\/")
+            .replaceAll("|", "\|")
+            .replaceAll("{", "\{")
+            .replaceAll("}", "\}")
+            .replaceAll("**/", "__GITHUB_WORKFLOW_WILDCARD_TESTER_DOT_STAR_RESERVED__")
+            .replaceAll("**", "__GITHUB_WORKFLOW_WILDCARD_TESTER_DOT_STAR_RESERVED__")
+            .replaceAll("*", "[^\/]*")
+            .replaceAll("__GITHUB_WORKFLOW_WILDCARD_TESTER_DOT_STAR_RESERVED__", ".*");
 
         let shouldInvert = false;
         if (_pattern[0] === '!') {
@@ -35,12 +35,12 @@ function matchGithubPatterns(patterns, _haystack) {
 
     _haystack.forEach(item => {
         regexes.forEach(regex => {
-          let matchesPattern = (new RegExp(regex.pattern)).test(item);
+            let matchesPattern = (new RegExp(regex.pattern)).test(item);
             if (matchesPattern) {
                 if (regex.shouldInvert) {
-                  matches.remove(item);
+                    matches.delete(item);
                 } else {
-                  matches.add(item);
+                    matches.add(item);
                 }
             }
         });
@@ -49,5 +49,5 @@ function matchGithubPatterns(patterns, _haystack) {
     return matches;
 }
 
-let results = matchGithubPatterns(["docs/**/*.md"], ["docs/mona/hello-world.md"]);
+let results = matchGithubPatterns(["releases/**", "!releases/**-alpha"], ["releases/10", "releases/beta/mona", "releases/10-alpha", "releases/beta/3-alpha"]);
 console.log([...results]);
